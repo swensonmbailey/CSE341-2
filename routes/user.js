@@ -5,16 +5,16 @@ router.use('/library', require('./library'));
 const userController = require('../controllers/user');
 
 
-router.get('/:id', userController);
+router.get('/:id', userController.getUser);
 
 //post route
 
-router.post('/', userController);
+router.post('/', userController.createUser);
 
 //put route
-router.put('/:id', userController);
+router.put('/:id', userController.updateUser);
 
 //delete route
-router.delete('/:id', userController);
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
