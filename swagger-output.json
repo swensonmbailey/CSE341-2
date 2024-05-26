@@ -78,15 +78,15 @@
                 "library": {
                   "example": "array"
                 }
-              },
-              "responses": {
-                "201": {
-                  "description": "Created"
-                }
               }
             }
           }
-        ]
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
       }
     },
     "/user/library/{id}": {
