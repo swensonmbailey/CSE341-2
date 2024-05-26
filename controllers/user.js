@@ -35,17 +35,9 @@ const createUser = async (req, res, next) =>  {
     
     // Execute insert 
     contacts.insertOne(req.body).then(result => {
-        console.log(result.insertedId);
+        console.log(result.insertedId.toString());
         res.status(201).send(result.insertedId.toString());
     });
-        
-        
-    //     function(err){
-    //     if (err) return;
-    //     // Object inserted successfully.
-    //     res.status(201).send(result.insertedId.toString()); // this will return the id of object inserted
-
-    // });
 
 
     
