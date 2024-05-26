@@ -5,10 +5,10 @@
     "description": "Description",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "ces341-z70g.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/user/{id}": {
@@ -42,7 +42,42 @@
         "description": "",
         "responses": {
           "default": {
-            "description": ""
+            "description": "",
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "example": "any"
+                    },
+                    "lastName": {
+                      "example": "any"
+                    },
+                    "email": {
+                      "example": "any"
+                    },
+                    "userName": {
+                      "example": "any"
+                    },
+                    "password": {
+                      "example": "any"
+                    },
+                    "dob": {
+                      "example": "any"
+                    },
+                    "subscribed": {
+                      "example": "boolean"
+                    },
+                    "library": {
+                      "example": "array"
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       }
