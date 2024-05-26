@@ -1,0 +1,47 @@
+// LOCALHOST
+
+###
+GET http://localhost:3000/user/665238613831cdbe06e89b32
+
+
+###
+POST http://localhost:3000/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName":"Karla",
+  "lastName":"Bailey",
+  "email":"Karla@gmail.com",
+  "dob":"04-16-1996",
+  "password":"password",
+  "subscribed":true,
+  "userName":"karlabailey",
+  "library":"[]"
+}
+
+
+
+// PRODUCTION Deploy
+
+###
+GET https://cse341-2-dbpb.onrender.com/user/665238613831cdbe06e89b32
+
+
+###
+POST https://cse341-2-dbpb.onrender.com/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName":"Karla",
+  "lastName":"Bailey",
+  "email":"Karla@gmail.com",
+  "dob":"04-16-1996",
+  "password":"password",
+  "subscribed":true,
+  "userName":"karlabailey",
+  "library":"[]"
+}
+
+
+
+
