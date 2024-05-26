@@ -5,7 +5,7 @@
     "description": "Description",
     "version": "1.0.0"
   },
-  "host": "ces341-z70g.onrender.com",
+  "host": "cse341-2-dbpb.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
