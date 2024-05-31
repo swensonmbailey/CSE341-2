@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const mongodb = require('./db/connect');
+const port = 3000;
 
 app
  .use((req, res, next) => {
@@ -26,7 +27,10 @@ app
 
 
 
-const port = 3000;
+
+process.on('uncaughtException', (err, origin) => {
+  console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);
+});
 
 
 mongodb.initDb((err, mongodb) => {
