@@ -1,5 +1,5 @@
 const mongodb = require('../db/connect');
-
+const functions = require('../functions/functions');
 
 const getUser = async (req, res, next ) =>  {
 
@@ -11,14 +11,21 @@ const getUser = async (req, res, next ) =>  {
     const userId = new ObjectId(req.params.id);
     
     // Get the database and collection on which to run the operation
-    const database = mongodb.getDb().db("Project2");
-    const contacts = database.collection("Users");
+    
     
     // Execute query 
-    const cursor = await contacts.find({_id: userId}).toArray().then((list) => {
-        res.send(JSON.stringify(list[0]));
-        console.log(JSON.stringify(list[0]));
-      });
+    try {
+        
+        let response = await functions.getUser(req, res);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(response);
+
+    } catch (err) {
+        console.log(`findOne error--> ${err}`);
+        res.status(400).send(`findOne error--> ${err}`);
+    }
+    
+    
 
 };
 
@@ -28,31 +35,20 @@ const createUser = async (req, res, next) =>  {
     console.log("in postRoute");
 
 
-    const connection = mongodb.getDb();
+    
     // Get the database and collection on which to run the operation
     const database = mongodb.getDb().db("Project2");
-    const contacts = database.collection("Users");
-    
-    // Execute insert 
-    contacts.insertOne(req.body).then(result => {
-        console.log(result.insertedId.toString());
-        res.status(201).send(result.insertedId.toString());
+    const collection = database.collection("Users");
+    await collection.insertOne(req.body).then(result => {
+
+        if (result.acknowledged) {
+            console.log(result.insertedId.toString());
+            res.status(201).send(result.insertedId);
+          } else {
+            res.status(500).json(result.error || 'Some error occurred while creating the contact.');
+        }
+        
     });
-
-
-    
-    //variables used to get the id of the recently inserted contact
-    // var first = req.body.firstName;
-    // var last = req.body.lastName;
-    // var email = req.body.email;
-    // await contacts.find({firstName: first, lastName: last, email: email}).toArray().then((list) => {
-    //     console.log("document created");
-    //     res.status(201).send(JSON.stringify(list[0]._id));
-    //     console.log(JSON.stringify(list[0]._id));
-    // });
-    
-
-
 }
 
 
@@ -63,13 +59,15 @@ const updateUser = async (req, res, next) =>  {
     const contactId = new ObjectId(req.params.id);
         
     // Get the database and collection on which to run the operation
-    const database = mongodb.getDb().db("CSE341");
-    const contacts = database.collection("contacts");
+    const database = mongodb.getDb().db("Project2");
+    const collection = database.collection("Users");
     
     // Execute update
-    await contacts.updateOne({_id: contactId}, {$set: req.body}, function(err, res) {
-        if (err) throw err;
-        console.log("1 document updated");
+    await collection.updateOne({_id: contactId}, {$set: req.body}, function(err, res) {
+        if (err){
+            console.log("not updated");
+            res.status(500).send(`${err}`);
+        } 
     });
 
     console.log("1 document updated--");
@@ -89,8 +87,10 @@ const deleteUser = async (req, res, next) =>  {
 
     // Execute delete
     await contacts.deleteOne({_id: contactId}, function(err, obj) {
-        if (err) throw err;
-        console.log("1 document deleted");
+        if (err){
+            console.log("not deleted");
+            res.status(500).send(`${err}`);
+        }
         
     });
 

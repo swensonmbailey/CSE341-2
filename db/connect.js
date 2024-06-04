@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const MongoClient = require('mongodb').MongoClient;
 
+
 let _db;
 
 const initDb = (callback) => {
@@ -30,8 +31,23 @@ const close = () => {
   _db.close();
 }
 
+
+const getCollection = (name) =>{
+  
+      
+  // Get the database and collection on which to run the operation
+  const database = getDb().db("Project2");
+  const collection = database.collection(name);
+
+  return collection;
+
+}
+
+
+
 module.exports = {
   initDb,
   getDb,
-  close
+  close,
+  getCollection
 };
