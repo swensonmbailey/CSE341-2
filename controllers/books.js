@@ -17,8 +17,8 @@ const allBooks = async (req, res, next) =>  {
         res.status(200).send(response);
         
     }catch(err){
-        console.log(`find Books error--> ${err}`);
-        res.status(400).send(`find Books error--> ${err}`);
+        console.log(`Book error--> ${err}`);
+        res.status(400).send(`Book error--> ${err}`);
     }
 };
 

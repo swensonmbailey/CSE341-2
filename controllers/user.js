@@ -35,20 +35,25 @@ const createUser = async (req, res, next) =>  {
     console.log("in postRoute");
 
 
-    
-    // Get the database and collection on which to run the operation
-    const database = mongodb.getDb().db("Project2");
-    const collection = database.collection("Users");
-    await collection.insertOne(req.body).then(result => {
+    try{
+        // Get the database and collection on which to run the operation
+        const collection = mongodb.getCollection("Users");
+        await collection.insertOne(req.body).then(result => {
 
-        if (result.acknowledged) {
-            console.log(result.insertedId.toString());
-            res.status(201).send(result.insertedId);
-          } else {
-            res.status(500).json(result.error || 'Some error occurred while creating the contact.');
-        }
-        
-    });
+            if (result.acknowledged) {
+                console.log(result.insertedId.toString());
+                res.status(201).send(result.insertedId);
+            } else {
+                throw new Error('Some error occurred while creating the contact.');
+            }
+            
+        });
+
+    }catch(err){
+        console.log(`Create user error--> ${err}`);
+        res.status(500).send(`Create user error--> ${err}`);
+    }
+    
 }
 
 
@@ -56,22 +61,26 @@ const updateUser = async (req, res, next) =>  {
 
     console.log("in putRoute");
     const ObjectId = require('mongodb').ObjectId;
-    const contactId = new ObjectId(req.params.id);
-        
-    // Get the database and collection on which to run the operation
-    const database = mongodb.getDb().db("Project2");
-    const collection = database.collection("Users");
-    
-    // Execute update
-    await collection.updateOne({_id: contactId}, {$set: req.body}, function(err, res) {
-        if (err){
-            console.log("not updated");
-            res.status(500).send(`${err}`);
-        } 
-    });
+    const userId = new ObjectId(req.params.id);
 
-    console.log("1 document updated--");
-    res.status(204).send();
+
+    try{
+        // Get the database and collection on which to run the operation
+        const collection = mongodb.getCollection("Users");
+        
+        // Execute update
+        await collection.updateOne({_id: userId}, {$set: req.body}, function(err, res) {
+            if (err){
+                throw new Error('Could not update. Try again later.');
+            } 
+        });
+
+        console.log("1 document updated--");
+        res.status(204).send();
+    }catch (err) {
+        console.log(`User update error--> ${err}`);
+        res.status(400).send(`User update error--> ${err}`);
+    }
 
 }
 
@@ -79,23 +88,27 @@ const updateUser = async (req, res, next) =>  {
 const deleteUser = async (req, res, next) =>  {
 
     const ObjectId = require('mongodb').ObjectId;
-    const contactId = new ObjectId(req.params.id);
-        
-    // Get the database and collection on which to run the operation
-    const database = mongodb.getDb().db("CSE341");
-    const contacts = database.collection("contacts");
+    const userId = new ObjectId(req.params.id);
 
-    // Execute delete
-    await contacts.deleteOne({_id: contactId}, function(err, obj) {
-        if (err){
-            console.log("not deleted");
-            res.status(500).send(`${err}`);
-        }
-        
-    });
+    try{
+        // Get the database and collection on which to run the operation
+        const collection = mongodb.getCollection("Users");
 
-    console.log("1 document deleted--");
-    res.status(200).send();
+        // Execute delete
+        await collection.deleteOne({_id: userId}, function(err, obj) {
+            if (err){
+                console.log("not deleted");
+                res.status(500).send(`${err}`);
+            }
+
+            console.log("1 document deleted--");
+            res.status(200).send();
+            
+        });
+    }catch(err){
+        console.log(`User deletion error--> ${err}`);
+        res.status(400).send(`User deletion error--> ${err}`);
+    }
 
 }
 
