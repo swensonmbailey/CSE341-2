@@ -98,13 +98,14 @@ const deleteUser = async (req, res, next) =>  {
         await collection.deleteOne({_id: userId}, function(err, obj) {
             if (err){
                 console.log("not deleted");
-                res.status(500).send(`${err}`);
+                throw new Error('user not deleted');
             }
-
-            console.log("1 document deleted--");
-            res.status(200).send();
             
         });
+
+        console.log("1 document deleted--");
+        res.status(200).send();
+
     }catch(err){
         console.log(`User deletion error--> ${err}`);
         res.status(400).send(`User deletion error--> ${err}`);
