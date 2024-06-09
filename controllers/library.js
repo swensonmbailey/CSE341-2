@@ -1,6 +1,7 @@
 const { json } = require('express');
 const mongodb = require('../db/connect');
 const functions = require('../functions/functions');
+const validate = require('../validate/validate');
 
 
 
@@ -28,6 +29,10 @@ const addBook = async (req, res, next) =>  {
     //use getuser function to access user data
     
     try{
+
+        // validate.validateLibraryAddition(req.params);
+        
+
         let response = await functions.getUser(req, res);
         let libraryid = response.library;
         

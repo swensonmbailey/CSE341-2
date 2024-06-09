@@ -1,5 +1,6 @@
 const mongodb = require('../db/connect');
 const functions = require('../functions/functions');
+const validate = require('../validate/validate');
 
 
 const allBooks = async (req, res, next) =>  {
@@ -30,6 +31,9 @@ const findBook = async (req, res, next ) =>  {
 
     //find a specific book
     try {
+
+        validate.validateId(req.params);        
+
         let results =  await functions.findBook(bookId, res,);
         console.log(results);
         res.setHeader('Content-Type', 'application/json');

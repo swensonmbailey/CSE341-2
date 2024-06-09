@@ -1,5 +1,6 @@
 const mongodb = require('../db/connect');
 const functions = require('../functions/functions');
+const validate = require('../validate/validate');
 
 const getUser = async (req, res, next ) =>  {
 
@@ -15,6 +16,8 @@ const getUser = async (req, res, next ) =>  {
     
     // Execute query 
     try {
+
+        validate.validateId(req.params);
         
         let response = await functions.getUser(req, res);
         res.setHeader('Content-Type', 'application/json');
@@ -36,6 +39,10 @@ const createUser = async (req, res, next) =>  {
 
 
     try{
+
+        validate.validateUser(req.body);
+
+
         // Get the database and collection on which to run the operation
         const collection = mongodb.getCollection("Users");
         await collection.insertOne(req.body).then(result => {
@@ -65,6 +72,9 @@ const updateUser = async (req, res, next) =>  {
 
 
     try{
+
+        validate.validateUser(req.body);
+
         // Get the database and collection on which to run the operation
         const collection = mongodb.getCollection("Users");
         
