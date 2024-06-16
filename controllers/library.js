@@ -72,7 +72,7 @@ const deleteBook = async (req, res, next) =>  {
         
         //delete the book id from the user's library
 
-        let index = libraryid.indexOf(req.params.bookId);
+        let index = libraryid.indexOf(req.body.bookId);
         if(index < 0){
             throw new Error('Can not remove book. Book is not located in your library.');
         }
