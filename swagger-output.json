@@ -276,7 +276,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "bookId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -313,22 +313,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "bookId",
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "bookId": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
