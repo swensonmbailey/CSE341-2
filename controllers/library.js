@@ -30,7 +30,7 @@ const addBook = async (req, res, next) =>  {
     
     try{
 
-        // validate.validateLibraryAddition(req.params);
+        await validate.validateLibraryAddition(req);
         
 
         let response = await functions.getUser(req, res);
@@ -38,8 +38,8 @@ const addBook = async (req, res, next) =>  {
         
         //delete the book id from the user's library
 
-        console.log(`bookId = ${req.params.bookId}`)
-        let newLibrary =  libraryid.concat(req.params.bookId);
+        console.log(`bookId = ${req.body.bookId}`)
+        let newLibrary =  libraryid.concat(req.body.bookId);
         // console.log(newLibrary);
 
         //update the new library to the database

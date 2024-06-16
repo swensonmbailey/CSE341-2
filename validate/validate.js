@@ -3,22 +3,6 @@ const mongodb = require('../db/connect');
 const functions = require('../functions/functions');
 
 
-const userRules = {
-    "firstName":"string",
-    "lastName":"string",
-    "email":"email",
-    "password":"string|min:5",
-    "subscribed": 'string',
-    // "userName":"required|string",
-    // // "library": 'required|array',
-    // // "dob":"date"
-}
-
-const idRules = {
-    "id": 'numeric|between:24,24',
-    "bookId": 'numeric|between:24,24'
-}
-
 const validateUser = (data) => {
 
     console.log(data.firstName);
@@ -49,6 +33,28 @@ const validateUser = (data) => {
 
 }
 
+
+const validateBook = (data) => {
+
+    console.log(data.title);
+    console.log(validator.isLength(data.title));
+    if(!(validator.isLength(data.title, 1, 200))){
+        throw new Error('Title not valid for entry.');
+    }
+    if(!validator.isAlpha(data.author, 'en-US', {ignore: ' '})){
+        throw new Error('Author name not valid for entry.');
+    }
+    if(!validator.isNumeric(data.released)||!validator.isLength(data.released, 4, 4)){
+        throw new Error('Released year not valid');
+    }
+    if(!validator.isLength(data.description, 1, 1000)){
+        throw new Error('Description not valid for entry.');
+    }
+
+}
+
+
+
 const validateId = (data) => {
 
     if(data.length > 0){
@@ -64,14 +70,14 @@ const validateId = (data) => {
 }
 
 
-const validateLibraryAddition = async (data) => {
+const validateLibraryAddition = async (req) => {
     
-    console.log('in validatelibrary');
-    console.log(data);
-    let user = await functions.getUser(data.id);
+    console.log(`in validatelibrary ${req.params.id}`);
+    let user = await functions.getUser(req);
     console.log(user);
-    let index = user.library.indexOf(data.bookId);
-    if(index == -1){
+    let index = user.library.indexOf(req.body.bookId);
+    console.log(index);
+    if(index > -1){
         throw new Error('Book is already in library.');
     }
     
@@ -81,5 +87,6 @@ const validateLibraryAddition = async (data) => {
 module.exports = {
     validateId,
     validateUser,
-    validateLibraryAddition
+    validateLibraryAddition,
+    validateBook
 };
